@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="one_signal_app_id" translatable="false" templateMergeStrategy="preserve">6e808b97-35c9-4a2f-a8bb-7b4c76c5549b</string>
+    <string name="one_signal_rest_api_key" translatable="false" templateMergeStrategy="preserve">ZDY1OWRlOTAtMzc0My00YjQ2LWFiNGMtOWZhYWVkODlmNWY3</string>
+</resources>
