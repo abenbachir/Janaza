@@ -4,7 +4,6 @@
 
     <!-- Optional permission, needed for geo tagging feature. -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +14,7 @@
         android:name=".AppApplication">
 
         <receiver
-            android:name="com.janaza.OneSignalBackgroundDataReceiver" android:exported="false">
+            android:name=".OneSignal.OneSignalBackgroundDataReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="com.onesignal.BackgroundBroadcast.RECEIVE" />
             </intent-filter>

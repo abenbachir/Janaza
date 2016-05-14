@@ -1,93 +1,164 @@
 package com.janaza;
 
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.onesignal.OneSignal;
-
+import com.janaza.Factories.FragmentFactory;
+import com.janaza.Fragments.OnFragmentInteractionListener;
+import com.janaza.OneSignal.OneSignalRestClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        OnFragmentInteractionListener
+ {
 
-    private String appId = "";
-    private Button sendNotificationButton;
+    private FragmentManager mFragmentManager;
+    private android.support.v4.app.FragmentTransaction mFragmentTransaction;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToogle;
+    private NavigationView mNavigationView;
+    private Toolbar toolbar;
+    private Fragment activeFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sendNotificationButton = (Button) findViewById(R.id.send_notification);
+        setTitle("Home");
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-        sendNotificationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    postNotification(new JSONObject("{'contents': {'en':'Test Message form admin'}, 'included_segments':[\"All\"]}"), null);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        //Setup DrawerLayout et NavigationView
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToogle = setupDrawerToggle();
+        mDrawerLayout.setDrawerListener(mDrawerToogle);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        //ajouter le premier fragment
+        mFragmentManager = getSupportFragmentManager();
+        //mDrawerLayout.openDrawer(GravityCompat.START);
+
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        activeFragment = FragmentFactory.getInstance().getMainFragment();
+
+        //ajoute tous les fragments et les hides
+        for (Fragment fragment : FragmentFactory.getInstance().getAllFragments()) {
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .hide(fragment)
+                    .commit();
+        }
+        //montre le premier fragment
+        fragmentManager.beginTransaction()
+                .show(activeFragment)
+                .commit();
 
     }
 
 
-    public void postNotification(JSONObject json, final OneSignal.PostNotificationResponseHandler handler) {
-        try {
 
-            OneSignalRestClient.post("notifications/", json, new OneSignalRestClient.ResponseHandler() {
-                @Override
-                public void onSuccess(String response) {
-                    Log.d("postNotification ", "HTTP create notification success: " + (response != null ? response : "null"));
-                    if (handler != null) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.has("errors"))
-                                handler.onFailure(jsonObject);
-                            else
-                                handler.onSuccess(new JSONObject(response));
-                        } catch (Throwable t) {
-                            t.printStackTrace();
-                        }
-                    }
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    logHttpError("create notification failed", statusCode, throwable, response);
-
-                    if (statusCode == 0)
-                        response = "{'error': 'HTTP no response error'}";
-
-                    if (handler != null) {
-                        try {
-                            handler.onFailure(new JSONObject(response));
-                        } catch (Throwable t) {
-                            handler.onFailure(null);
-                        }
-                    }
-                }
-            });
-        } catch (Exception e) {
-            Log.d("postNotification ", "HTTP create notification json exception!", e);
-            if (handler != null) {
-                try {
-                    handler.onFailure(new JSONObject("{'error': 'HTTP create notification json exception!'}"));
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
-                }
-            }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 
-    private static void logHttpError(String errorString, int statusCode, Throwable throwable, String errorResponse) {
-        String jsonError = "";
-        if (errorResponse != null)
-            jsonError = "\n" + errorResponse + "\n";
-        Log.d("logHttpError ", "HTTP code: " + statusCode + " " + errorString + jsonError, throwable);
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToogle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
+    // `onPostCreate` called when activity start-up is complete after `onStart()`
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToogle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        mDrawerToogle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        //ORGANISATION DU CHANGEMENT DE VUES/FRAGMENTS DANS LA BARRE DE NAVIGATION
+        int id = item.getItemId();
+        if (id == R.id.nav_signOut) {
+//            Intent intent = new Intent(this, SplashActivity.class);
+//            startActivity(intent);
+//            finish();
+        } else {
+            switchFragment(FragmentFactory.getInstance().getFragment(id));
+        }
+        item.setChecked(true);
+        setTitle(item.getTitle());
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    protected void switchFragment(Fragment toFragment) {
+        if (activeFragment != toFragment) {
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out)
+                    .hide(activeFragment)
+                    .show(toFragment)
+                    .commit();
+            activeFragment = toFragment;
+        }
+    }
+
+    public void onSwitchToFragmentView(Fragment toFragment) {
+        switchFragment(toFragment);
+    }
+
+    public void onSwitchToMainFragmentView() {
+        switchFragment(FragmentFactory.getInstance().getMainFragment());
+    }
+
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+
 }

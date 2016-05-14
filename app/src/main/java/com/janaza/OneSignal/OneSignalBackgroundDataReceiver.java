@@ -1,4 +1,4 @@
-package com.janaza;
+package com.janaza.OneSignal;
 
 import android.content.Context;
 import android.content.Intent;

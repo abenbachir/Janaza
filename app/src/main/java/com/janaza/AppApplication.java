@@ -1,11 +1,10 @@
 package com.janaza;
 
 import android.app.Application;
-import android.util.Log;
 
+import com.janaza.OneSignal.OneSignalNotificationOpenedHandler;
+import com.janaza.OneSignal.OneSignalRestClient;
 import com.onesignal.OneSignal;
-
-import org.json.JSONObject;
 
 public class AppApplication extends Application {
 
@@ -14,7 +13,7 @@ public class AppApplication extends Application {
         super.onCreate();
         OneSignal.startInit(this)
                 .setNotificationOpenedHandler(new OneSignalNotificationOpenedHandler(this))
-                .setAutoPromptLocation(true)
+//                .setAutoPromptLocation(true)
                 .init();
         // Logging set to help debug issues, remove before releasing your app.
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG, OneSignal.LOG_LEVEL.WARN);

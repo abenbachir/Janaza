@@ -1,4 +1,4 @@
-package com.janaza;
+package com.janaza.OneSignal;
 
 import android.util.Log;
 
@@ -13,10 +13,10 @@ import org.json.JSONObject;
 public class OneSignalRestClient {
 
     public static class ResponseHandler {
-        void onSuccess(String response) {
+        public void onSuccess(String response) {
         }
 
-        void onFailure(int statusCode, String response, Throwable throwable) {
+        public void onFailure(int statusCode, String response, Throwable throwable) {
         }
     }
 
@@ -25,7 +25,7 @@ public class OneSignalRestClient {
     public static String REST_API_KEY = "";
     public static String APP_ID = "";
 
-    static void put(final String url, final JSONObject jsonBody, final ResponseHandler responseHandler) {
+    public static void put(final String url, final JSONObject jsonBody, final ResponseHandler responseHandler) {
 
         new Thread(new Runnable() {
             public void run() {
@@ -34,7 +34,7 @@ public class OneSignalRestClient {
         }).start();
     }
 
-    static void post(final String url, final JSONObject jsonBody, final ResponseHandler responseHandler) {
+    public static void post(final String url, final JSONObject jsonBody, final ResponseHandler responseHandler) {
         new Thread(new Runnable() {
             public void run() {
                 makeRequest(url, "POST", jsonBody, responseHandler);
@@ -42,15 +42,15 @@ public class OneSignalRestClient {
         }).start();
     }
 
-    static void getSync(final String url, final ResponseHandler responseHandler) {
+    public static void getSync(final String url, final ResponseHandler responseHandler) {
         makeRequest(url, null, null, responseHandler);
     }
 
-    static void putSync(String url, JSONObject jsonBody, ResponseHandler responseHandler) {
+    public static void putSync(String url, JSONObject jsonBody, ResponseHandler responseHandler) {
         makeRequest(url, "PUT", jsonBody, responseHandler);
     }
 
-    static void postSync(String url, JSONObject jsonBody, ResponseHandler responseHandler) {
+    public static void postSync(String url, JSONObject jsonBody, ResponseHandler responseHandler) {
         makeRequest(url, "POST", jsonBody, responseHandler);
     }
 

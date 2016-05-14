@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_janazat"
+            android:title="Janazat" />
+
+
+        <item
+            android:id="@+id/nav_sunan"
+            android:title="Sunan" />
+
+        <item
+            android:id="@+id/nav_salat"
+            android:title="Salat" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:title="Settings" />
+
+    </group>
+
+
+    <item android:title="Admin" android:id="@+id/nav_administration">
+        <menu>
+            <item
+                android:id="@+id/nav_send_notification"
+                android:title="Notification" />
+        </menu>
+    </item>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_signOut"
+                android:title="Sign Out" />
+        </menu>
+    </item>
+
+</menu>
