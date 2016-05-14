@@ -1,10 +1,11 @@
 package com.janaza;
 
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.res.Configuration;
+import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -16,20 +17,25 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 import com.janaza.Factories.FragmentFactory;
 import com.janaza.Fragments.OnFragmentInteractionListener;
-import com.janaza.OneSignal.OneSignalRestClient;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.janaza.Services.AccountManager;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OnFragmentInteractionListener
- {
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        OnFragmentInteractionListener {
 
+    private static final int RC_SIGN_IN = 0;
     private FragmentManager mFragmentManager;
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
     private DrawerLayout mDrawerLayout;
@@ -37,6 +43,12 @@ public class MainActivity extends AppCompatActivity implements
     private NavigationView mNavigationView;
     private Toolbar toolbar;
     private Fragment activeFragment;
+    private AccountManager accountManager = AccountManager.getInstance();
+    private SignInButton btnSignIn;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean signInClicked = false;
+    private boolean mIntentInProgress;
+    private ConnectionResult mConnectionResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +70,8 @@ public class MainActivity extends AppCompatActivity implements
         //ajouter le premier fragment
         mFragmentManager = getSupportFragmentManager();
         //mDrawerLayout.openDrawer(GravityCompat.START);
-
         mNavigationView.setNavigationItemSelectedListener(this);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
-
         activeFragment = FragmentFactory.getInstance().getMainFragment();
 
         //ajoute tous les fragments et les hides
@@ -78,10 +87,133 @@ public class MainActivity extends AppCompatActivity implements
                 .show(activeFragment)
                 .commit();
 
+        View headerLayout = mNavigationView.getHeaderView(0);
+        btnSignIn = (SignInButton) headerLayout.findViewById(R.id.sign_in_button);
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnClickSignIn(v);
+            }
+        });
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        if (!accountManager.isConnected()) {
+            mGoogleApiClient = buildGoogleAPIClient();
+            accountManager.setGoogleApiClient(mGoogleApiClient);
+        }
+
+        updateAccountBox();
+        updateNavigationMenuItems();
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!accountManager.isConnected()) {
+            mGoogleApiClient.connect();
+        }
+    }
 
+    private GoogleApiClient buildGoogleAPIClient() {
+        return new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API, Plus.PlusOptions.builder().build())
+                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+    }
+
+    @NonNull
+    public void onConnectionFailed(ConnectionResult result) {
+        if (!result.hasResolution()) {
+            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
+                    0).show();
+            return;
+        }
+
+        if (!mIntentInProgress) {
+            mConnectionResult = result;
+            if (signInClicked) {
+                //déjà connecté
+                resolveSignInError();
+            }
+        }
+        btnSignIn.setEnabled(true);
+        btnSignIn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode,
+                                    Intent intent) {
+        if (requestCode == RC_SIGN_IN) {
+            if (responseCode != RESULT_OK) {
+                signInClicked = false;
+            }
+
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+
+    public void onConnected(Bundle arg0) {
+        signInClicked = false;
+        accountManager.updateAccount();
+        updateAccountBox();
+        updateNavigationMenuItems();
+    }
+
+    public void onConnectionSuspended(int arg0) {
+        mGoogleApiClient.connect();
+    }
+
+    private void OnClickSignIn(View v) {
+        if (!mGoogleApiClient.isConnecting()) {
+            signInClicked = true;
+            resolveSignInError();
+        }
+        btnSignIn.setEnabled(false);
+    }
+
+    //erreurs dans le signin
+    private void resolveSignInError() {
+        if (mConnectionResult.hasResolution()) {
+            try {
+                mIntentInProgress = true;
+                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
+            } catch (IntentSender.SendIntentException e) {
+                mIntentInProgress = false;
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+    protected void updateAccountBox() {
+         View headerLayout = mNavigationView.getHeaderView(0);
+
+         LinearLayout signinLayout = (LinearLayout) headerLayout.findViewById(R.id.nav_header_signin_options_layout);
+         LinearLayout displayLayout = (LinearLayout) headerLayout.findViewById(R.id.nav_header_display_layout);
+         signinLayout.setVisibility(View.GONE);
+         displayLayout.setVisibility(View.GONE);
+         if(accountManager.getAccount() != null) {
+             String url = accountManager.getAccount().getPictureUrl();
+             TextView profileName = (TextView) headerLayout.findViewById(R.id.nav_profileName);
+             TextView profileEmail = (TextView) headerLayout.findViewById(R.id.nav_profileEmail);
+             profileName.setText(accountManager.getAccount().getDisplayName());
+             profileEmail.setText(accountManager.getAccount().getEmail());
+             displayLayout.setVisibility(View.VISIBLE);
+         }else{
+             btnSignIn.setEnabled(true);
+             signinLayout.setVisibility(View.VISIBLE);
+         }
+     }
+
+    protected void updateNavigationMenuItems() {
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -118,18 +250,20 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         //ORGANISATION DU CHANGEMENT DE VUES/FRAGMENTS DANS LA BARRE DE NAVIGATION
+
         int id = item.getItemId();
         if (id == R.id.nav_signOut) {
-//            Intent intent = new Intent(this, SplashActivity.class);
-//            startActivity(intent);
-//            finish();
+            accountManager.disconnect();
+            updateAccountBox();
+            updateNavigationMenuItems();
         } else {
             switchFragment(FragmentFactory.getInstance().getFragment(id));
+            item.setChecked(true);
+            setTitle(item.getTitle());
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-        item.setChecked(true);
-        setTitle(item.getTitle());
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
