@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Janazat"
+            android:text="@string/menu_janazat"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 </LinearLayout>

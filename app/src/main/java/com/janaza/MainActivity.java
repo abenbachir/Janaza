@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements
         if (!accountManager.isConnected()) {
             mGoogleApiClient.connect();
         }
+
     }
 
     private GoogleApiClient buildGoogleAPIClient() {
@@ -252,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements
         //ORGANISATION DU CHANGEMENT DE VUES/FRAGMENTS DANS LA BARRE DE NAVIGATION
 
         int id = item.getItemId();
+        Toast.makeText(getBaseContext(),""+id,Toast.LENGTH_SHORT);
         if (id == R.id.nav_signOut) {
             accountManager.disconnect();
             updateAccountBox();

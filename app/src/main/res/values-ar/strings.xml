@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Janaza</string>
+    <string name="drawer_close">sado</string>
+    <string name="drawer_open">7alo</string>
+    <string name="menu_home">Marhaban</string>
+    <string name="menu_janazat">janaza</string>
+    <string name="menu_salat">sala</string>
+    <string name="menu_setting">optio</string>
+    <string name="menu_sunan">souna</string>
+</resources>
