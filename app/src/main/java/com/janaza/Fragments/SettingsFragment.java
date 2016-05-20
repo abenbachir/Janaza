@@ -18,6 +18,10 @@ import java.util.Locale;
 
 public class SettingsFragment extends BaseFragment {
 
+    private Button changeLang;
+    private Locale myLocale;
+    private int Cmpt = 0;
+
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -74,17 +78,13 @@ public class SettingsFragment extends BaseFragment {
                     .remove(fragment)
                     .add(R.id.fragment_container, fragment)
                     .hide(fragment)
-                    .show(fragment)
                     .commit();
         }
 
+        mListener.onSwitchToMainFragmentView();
 
     }
 
-
-    private Button changeLang;
-    private Locale myLocale;
-    private int Cmpt = 0;
 
 }
 
