@@ -28,7 +28,7 @@
     </group>
 
 
-    <item android:title="Admin" android:id="@+id/nav_administration" android:enabled="false" android:visible="false">
+    <item android:title="Admin" android:id="@+id/nav_administration" android:enabled="true" android:visible="true">
         <menu>
             <item
                 android:id="@+id/nav_send_notification"
