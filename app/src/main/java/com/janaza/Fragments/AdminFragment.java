@@ -30,18 +30,18 @@ public class AdminFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin, container, false);
 
-//        sendNotificationButton = (Button) findViewById(R.id.send_notification);
-//
-//        sendNotificationButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    postNotification(new JSONObject("{'contents': {'en':'Test Message form admin'}, 'included_segments':[\"All\"]}"), null);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        sendNotificationButton = (Button) view.findViewById(R.id.send_notification);
+
+        sendNotificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    postNotification(new JSONObject("{'contents': {'en':'Test Message form admin'}, 'included_segments':[\"All\"]}"), null);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         return view;
     }
 

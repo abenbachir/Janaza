@@ -5,13 +5,143 @@
     tools:context="com.janaza.Fragments.AdminFragment">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send notification"
-        android:id="@+id/send_notification"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical" />
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Send notification"-->
+        <!--android:id="@+id/send_notification"-->
+        <!--android:layout_below="@+id/textView"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_gravity="center_vertical" />-->
+
+
+    <ScrollView
+        android:id="@+id/signup_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        android:layout_gravity="center"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:id="@+id/signup_form_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="146dp"
+                    android:layout_height="146dp"
+                    android:id="@+id/profile_picture"
+                    android:layout_gravity="center_horizontal"
+                    android:src="" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SET PROFILE PICTURE"
+                    android:id="@+id/change_picture"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:background="@color/colorPrimary"
+                    android:textColor="#ffff"
+                    style="?android:textAppearanceSmall"
+                    android:layout_marginTop="10dp" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="username@gmail.com"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/group_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeActionId="@+id/login"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:imeActionLabel="sign up"
+                    android:hint="hint" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <CheckBox
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Check box"
+                    android:id="@+id/im_organizer"
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Preferences (Pick at least 3 places)"
+                    android:id="@+id/textView2"
+                    android:textSize="17sp"
+                    android:textColor="#000000" />
+
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/sign_up_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Send"
+                android:textStyle="bold"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                style="?android:textAppearanceSmall"
+                android:layout_marginTop="0dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
