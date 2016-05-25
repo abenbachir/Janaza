@@ -1,21 +1,45 @@
 package com.janaza.Fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TimePicker;
 
 import com.janaza.OneSignal.OneSignalRestClient;
 import com.janaza.R;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 public class AdminFragment extends BaseFragment {
 
     private Button sendNotificationButton;
+    private Spinner numberPersonSpinner;
+    private Spinner janazaPlacesSpinner;
+    private CheckBox manCheckBox;
+    private CheckBox womanCheckBox;
+    private CheckBox childCheckBox;
+
+
+    private TimePicker timePicker;
+    private DatePicker datePicker;
+
+    private final String[] janazaPlaces = {"ICQ", "Qoubaa"};
+    private final Integer[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
     public AdminFragment() {
         // Required empty public constructor
     }
@@ -30,7 +54,21 @@ public class AdminFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin, container, false);
 
-        sendNotificationButton = (Button) view.findViewById(R.id.send_notification);
+        numberPersonSpinner = (Spinner) view.findViewById(R.id.numberPersonSpinner);
+        numberPersonSpinner.setAdapter(new ArrayAdapter<Integer>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, numbers));
+        janazaPlacesSpinner = (Spinner) view.findViewById(R.id.janazaPlacesSpinner);
+        janazaPlacesSpinner.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, janazaPlaces));
+
+        datePicker = (DatePicker) view.findViewById(R.id.janaza_datePicker);
+        datePicker.setMinDate(System.currentTimeMillis());
+
+        timePicker = (TimePicker) view.findViewById(R.id.janaza_timePicker);
+        if(Build.VERSION.SDK_INT >= 23) {
+            timePicker.setHour(13);
+            timePicker.setMinute(0);
+        }
+        timePicker.setIs24HourView(true);
+        sendNotificationButton = (Button) view.findViewById(R.id.send_janaza_notification);
 
         sendNotificationButton.setOnClickListener(new View.OnClickListener() {
             @Override

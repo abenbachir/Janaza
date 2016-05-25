@@ -8,18 +8,18 @@
             android:id="@+id/nav_home"
             android:title="@string/menu_home" />
 
-        <item
-            android:id="@+id/nav_janazat"
-            android:title="@string/menu_janazat" />
+        <!--<item-->
+            <!--android:id="@+id/nav_janazat"-->
+            <!--android:title="@string/menu_janazat" />-->
 
 
-        <item
-            android:id="@+id/nav_sunan"
-            android:title="@string/menu_sunan" />
+        <!--<item-->
+            <!--android:id="@+id/nav_sunan"-->
+            <!--android:title="@string/menu_sunan" />-->
 
-        <item
-            android:id="@+id/nav_salat"
-            android:title="@string/menu_salat" />
+        <!--<item-->
+            <!--android:id="@+id/nav_salat"-->
+            <!--android:title="@string/menu_salat" />-->
 
         <item
             android:id="@+id/nav_settings"
