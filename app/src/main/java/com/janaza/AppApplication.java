@@ -1,16 +1,29 @@
 package com.janaza;
 
 import android.app.Application;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
+import android.widget.TextView;
 
 import com.janaza.OneSignal.OneSignalNotificationOpenedHandler;
 import com.janaza.OneSignal.OneSignalRestClient;
 import com.onesignal.OneSignal;
+
+import java.util.Locale;
 
 public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        AssetManager am = this.getAssets();
+
+        Typeface typeface = Typeface.createFromAsset(am,
+                String.format(new Locale("", "fr", "CA"), "fonts/%s", "UniversNextArabic-Regular.ttf"));
+
+        //setTypeface(typeface);
+
         OneSignal.startInit(this)
                 .setNotificationOpenedHandler(new OneSignalNotificationOpenedHandler(this))
 //                .setAutoPromptLocation(true)
