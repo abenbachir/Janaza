@@ -73,19 +73,19 @@ public class MainActivity extends AppCompatActivity implements
         //mDrawerLayout.openDrawer(GravityCompat.START);
         mNavigationView.setNavigationItemSelectedListener(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        activeFragment = FragmentFactory.getInstance().getMainFragment();
+        activeFragment = FragmentFactory.getInstance().getAdminFragment();
 
         //ajoute tous les fragments et les hides
-        for (Fragment fragment : FragmentFactory.getInstance().getAllFragments()) {
-            fragmentManager
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .hide(fragment)
-                    .commit();
-        }
+//        for (Fragment fragment : FragmentFactory.getInstance().getAllFragments()) {
+//            fragmentManager
+//                    .beginTransaction()
+//                    .add(R.id.fragment_container, fragment)
+//                    .hide(fragment)
+//                    .commit();
+//        }
         //montre le premier fragment
         fragmentManager.beginTransaction()
-                .show(activeFragment)
+                .replace(R.id.fragment_container,activeFragment)
                 .commit();
 
         View headerLayout = mNavigationView.getHeaderView(0);
@@ -277,8 +277,9 @@ public class MainActivity extends AppCompatActivity implements
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out)
-                    .hide(activeFragment)
-                    .show(toFragment)
+//                    .hide(activeFragment)
+//                    .show(toFragment)
+                    .replace(R.id.fragment_container, toFragment)
                     .commit();
             activeFragment = toFragment;
         }

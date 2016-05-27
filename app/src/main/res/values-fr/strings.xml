@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Janaza</string>
+    <string name="app_name">Janaza Québec</string>
     <string name="drawer_close">Fermer le menu</string>
     <string name="drawer_open">Ouvrir le menu</string>
     <string name="menu_home">Accueil</string>
     <string name="menu_janazat">Janazate</string>
     <string name="menu_salat">Salate</string>
-    <string name="menu_setting">Options</string>
     <string name="menu_sunan">Sounan</string>
+    <string name="menu_setting">Paramètres</string>
 </resources>
