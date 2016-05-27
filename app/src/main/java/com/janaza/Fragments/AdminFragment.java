@@ -60,7 +60,7 @@ public class AdminFragment extends BaseFragment {
         janazaPlacesSpinner.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, janazaPlaces));
 
         datePicker = (DatePicker) view.findViewById(R.id.janaza_datePicker);
-        datePicker.setMinDate(System.currentTimeMillis());
+//        datePicker.setMinDate(System.currentTimeMillis());
 
         timePicker = (TimePicker) view.findViewById(R.id.janaza_timePicker);
         if(Build.VERSION.SDK_INT >= 23) {

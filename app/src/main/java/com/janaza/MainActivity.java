@@ -1,5 +1,6 @@
 package com.janaza;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Configuration;
@@ -30,6 +31,8 @@ import com.janaza.Factories.FragmentFactory;
 import com.janaza.Fragments.OnFragmentInteractionListener;
 import com.janaza.Services.AccountManager;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -50,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements
     private boolean signInClicked = false;
     private boolean mIntentInProgress;
     private ConnectionResult mConnectionResult;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements
         //mDrawerLayout.openDrawer(GravityCompat.START);
         mNavigationView.setNavigationItemSelectedListener(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        activeFragment = FragmentFactory.getInstance().getAdminFragment();
+        activeFragment = FragmentFactory.getInstance().getMainFragment();
 
         //ajoute tous les fragments et les hides
 //        for (Fragment fragment : FragmentFactory.getInstance().getAllFragments()) {
