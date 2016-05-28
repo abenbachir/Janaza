@@ -2,6 +2,8 @@ package com.janaza.Factories;
 
 
 import android.support.v4.app.Fragment;
+
+import com.janaza.Fragments.MainFragment;
 import com.janaza.R;
 import com.janaza.Fragments.AdminFragment;
 import com.janaza.Fragments.HomeFragment;
@@ -45,25 +47,48 @@ public class FragmentFactory {
         return INSTANCE;
     }
 
+
     public Fragment getMainFragment() {
         return getFragment(-1);
     }
     public Fragment getAdminFragment() {
         return getFragment(R.id.nav_send_notification);
     }
-
+    public Fragment getHomeFragment() {
+        return getFragment(HomeFragment.class);
+    }
+    public Fragment getJanazaHistoryFragment() {
+        return getFragment(JanazatFragment.class);
+    }
     public Collection<Fragment> getAllFragments() {
         return cache.values();
     }
 
+    protected Fragment getFragment(Class fragmentClass){
+        String fragmentName = fragmentClass.toString();
+        Fragment fragment;
+        if (!cache.containsKey(fragmentName)) {
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+                cache.put(fragmentName, fragment);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        fragment = cache.get(fragmentName);
+        return fragment;
+    }
     public Fragment getFragment(int itemId) {
 
         Class fragmentClass;
 
         switch (itemId) {
-            case R.id.nav_home:
-                fragmentClass = HomeFragment.class;
+            case R.id.nav_main:
+                fragmentClass = MainFragment.class;
                 break;
+//            case R.id.nav_home:
+//                fragmentClass = HomeFragment.class;
+//                break;
 //            case R.id.nav_janazat:
 //                fragmentClass = JanazatFragment.class;
 //                break;
@@ -80,19 +105,9 @@ public class FragmentFactory {
                 fragmentClass = AdminFragment.class;
                 break;
             default:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = MainFragment.class;
         }
-        String fragmentName = fragmentClass.toString();
-        Fragment fragment;
-        if (!cache.containsKey(fragmentName)) {
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-                cache.put(fragmentName, fragment);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        fragment = cache.get(fragmentName);
-        return fragment;
+
+        return getFragment(fragmentClass);
     }
 }

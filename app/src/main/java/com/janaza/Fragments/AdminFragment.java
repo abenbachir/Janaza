@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -30,14 +32,14 @@ public class AdminFragment extends BaseFragment {
     private Spinner numberPersonSpinner;
     private Spinner janazaPlacesSpinner;
     private CheckBox manCheckBox;
-    private CheckBox womanCheckBox;
+    private CheckBox womenCheckBox;
     private CheckBox childCheckBox;
-
+    private EditText janazaPlaceOther;
 
     private TimePicker timePicker;
     private DatePicker datePicker;
 
-    private final String[] janazaPlaces = {"ICQ", "Qoubaa"};
+    private final String[] janazaPlaces = {"Islamic Center Of Quebec (ICQ)", "Qoubaa", "Other"};
     private final Integer[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     public AdminFragment() {
@@ -54,22 +56,39 @@ public class AdminFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin, container, false);
 
+//        this.title = getResources().getString(R.string.menu_);
+
         numberPersonSpinner = (Spinner) view.findViewById(R.id.numberPersonSpinner);
         numberPersonSpinner.setAdapter(new ArrayAdapter<Integer>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, numbers));
         janazaPlacesSpinner = (Spinner) view.findViewById(R.id.janazaPlacesSpinner);
         janazaPlacesSpinner.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, janazaPlaces));
 
+        janazaPlacesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = janazaPlaces[position];
+                janazaPlaceOther.setVisibility(item.equals("Other") ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        manCheckBox = (CheckBox) view.findViewById(R.id.manCheckBox);
+        womenCheckBox = (CheckBox) view.findViewById(R.id.womenCheckBox);
+        childCheckBox = (CheckBox) view.findViewById(R.id.childCheckBox);
+        janazaPlaceOther = (EditText) view.findViewById(R.id.janazaPlaceOther);
         datePicker = (DatePicker) view.findViewById(R.id.janaza_datePicker);
-//        datePicker.setMinDate(System.currentTimeMillis());
+        if(Build.VERSION.SDK_INT >= 23)
+            datePicker.setMinDate(System.currentTimeMillis());
 
         timePicker = (TimePicker) view.findViewById(R.id.janaza_timePicker);
         if(Build.VERSION.SDK_INT >= 23) {
             timePicker.setHour(13);
             timePicker.setMinute(0);
         }
-        timePicker.setIs24HourView(true);
         sendNotificationButton = (Button) view.findViewById(R.id.send_janaza_notification);
-
         sendNotificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,9 +99,30 @@ public class AdminFragment extends BaseFragment {
                 }
             }
         });
+
+        reset();
+
         return view;
     }
 
+    @Override
+    public void onVisible() {
+        super.onVisible();
+
+        reset();
+    }
+
+    protected void reset()
+    {
+        manCheckBox.setChecked(false);
+        womenCheckBox.setChecked(false);
+        childCheckBox.setChecked(false);
+        janazaPlaceOther.setText("");
+        janazaPlaceOther.setVisibility(View.GONE);
+        if(janazaPlacesSpinner.getSelectedItem().toString().equals("Other")){
+            janazaPlaceOther.setVisibility(View.VISIBLE);
+        }
+    }
 
     public void postNotification(JSONObject json, final com.onesignal.OneSignal.PostNotificationResponseHandler handler) {
         try {

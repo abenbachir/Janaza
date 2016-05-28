@@ -1,29 +1,23 @@
 package com.janaza.Fragments;
 
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import java.util.Locale;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.util.DisplayMetrics;
-import android.widget.Toast;
-
-import com.janaza.AppApplication;
-import com.janaza.Factories.FragmentFactory;
-import com.janaza.MainActivity;
 import com.janaza.R;
 
 public class HomeFragment extends BaseFragment {
 
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+
+    @Override
+    public Drawable getIcon(){
+        return this.getResources().getDrawable(R.drawable.home);
     }
 
     @Override
@@ -36,7 +30,8 @@ public class HomeFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-
+        this.title = view.getTag().toString();
+//        this.title = getResources().getString(R.string.menu_home);
         return view;
     }
 

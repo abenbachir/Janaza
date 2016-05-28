@@ -1,5 +1,6 @@
 package com.janaza.Fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,10 @@ public class JanazatFragment extends BaseFragment {
     }
 
     @Override
+    public Drawable getIcon(){
+        return this.getResources().getDrawable(R.drawable.history);
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -23,7 +28,7 @@ public class JanazatFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_janazat, container, false);
 
-
+        this.title = view.getTag().toString();
         return view;
     }
     

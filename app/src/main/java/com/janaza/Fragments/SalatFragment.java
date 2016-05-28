@@ -23,7 +23,7 @@ public class SalatFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_salat, container, false);
 
-
+        this.title = view.getTag().toString();
         return view;
     }
 

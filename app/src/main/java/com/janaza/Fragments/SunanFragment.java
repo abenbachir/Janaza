@@ -23,7 +23,7 @@ public class SunanFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sunan, container, false);
 
-
+        this.title = view.getTag().toString();
         return view;
     }
 

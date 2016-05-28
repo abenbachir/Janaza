@@ -90,8 +90,8 @@
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Woman"
-                        android:id="@+id/checkBox3"
+                        android:text="Women"
+                        android:id="@+id/womenCheckBox"
                         android:checked="false"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="0.3" />
@@ -100,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Child"
-                        android:id="@+id/checkBox2"
+                        android:id="@+id/childCheckBox"
                         android:checked="false"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="0.3" />
@@ -130,6 +130,14 @@
                     android:id="@+id/janazaPlacesSpinner"
                     android:layout_gravity="center_horizontal"
                     android:spinnerMode="dropdown" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/janazaPlaceOther"
+                    android:hint="@string/admin_janaza_place_other_hint"/>
 
 
             </LinearLayout>
