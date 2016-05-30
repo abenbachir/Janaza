@@ -4,8 +4,25 @@
     <string name="drawer_close">Fermer le menu</string>
     <string name="drawer_open">Ouvrir le menu</string>
     <string name="menu_home">Accueil</string>
-    <string name="menu_janazat">Janazate</string>
+    <string name="menu_janazat">Enterrements</string>
     <string name="menu_salat">Salate</string>
     <string name="menu_sunan">Sounan</string>
     <string name="menu_setting">Paramètres</string>
+    <string name="admin_janaza_place_other">Autre</string>
+    <string name="admin_janaza_place_other_hint">Ajouter un lieu ...</string>
+    <string name="menu_main">Accueil</string>
+    <string name="menu_administration">Administration</string>
+    <string name="menu_notification">Notification</string>
+    <string name="notif_dropbox_item1">Centre islamique du Québec (ICQ)</string>
+    <string name="notif_btnSend">Envoyer</string>
+    <string name="notif_dropbox_item2">Qoubaa</string>
+    <string name="notif_dropbox_item3">Autre</string>
+    <string name="notif_gender_child">Enfant</string>
+    <string name="notif_gender_man">Homme</string>
+    <string name="notif_gender_women">Femme</string>
+    <string name="notif_number">Nombre :</string>
+    <string name="notif_titleDate">Date et heure de l\'enterrement :</string>
+    <string name="notif_titlePlaces"> Lieux de l\'enterrement :</string>
+    <string name="notif_titleRelatedPerson">Informations sur la personne :</string>
+    <string name="menu_admin">Admin</string>
 </resources>

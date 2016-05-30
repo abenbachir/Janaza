@@ -3,13 +3,30 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <!-- Strings for the menu and titles -->
     <string name="menu_main">Principal</string>
     <string name="menu_home">Home</string>
-    <string name="menu_janazat">Janazat</string>
+    <string name="menu_janazat">Funeral</string>
     <string name="menu_sunan">Sunan</string>
     <string name="menu_salat">Salat</string>
     <string name="menu_setting">Settings</string>
     <string name="menu_administration">Administration</string>
+    <string name="menu_notification">Notification</string>
+    <string name="menu_admin">Admin</string>
+
+    <!-- Strings for the notification view -->
+    <string name="notif_titleRelatedPerson">Information about the person :</string>
+    <string name="notif_number">Number :</string>
+    <string name="notif_gender_man">Man</string>
+    <string name="notif_gender_women">Women</string>
+    <string name="notif_gender_child">Child</string>
+    <string name="notif_titlePlaces">Places of the funeral :</string>
+    <string name="notif_dropbox_item1">Islamic Center Of Quebec (ICQ)</string>
+    <string name="notif_dropbox_item2">Qoubaa</string>
+    <string name="notif_dropbox_item3">Other</string>
+    <string name="notif_titleDate">Date and time of the funeral:</string>
+    <string name="notif_btnSend">Send</string>
+
 
 
     <string name="admin_janaza_place_other">Other</string>

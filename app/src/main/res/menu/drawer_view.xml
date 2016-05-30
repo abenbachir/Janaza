@@ -28,11 +28,11 @@
     </group>
 
 
-    <item android:title="Admin" android:id="@+id/nav_administration" android:enabled="true" android:visible="true">
+    <item android:title="@string/menu_admin" android:id="@+id/nav_administration" android:enabled="true" android:visible="true">
         <menu>
             <item
                 android:id="@+id/nav_send_notification"
-                android:title="Notification" />
+                android:title="@string/menu_notification" />
         </menu>
     </item>
 

@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">الجنازة كيبيك</string>
-    <string name="drawer_open">TT:Open navigation drawer</string>
-    <string name="drawer_close">TT:Close navigation drawer</string>
-    <string name="menu_home">TT:Home</string>
-    <string name="menu_janazat">TT:Janazat</string>
-    <string name="menu_sunan">TT:Sunan</string>
-    <string name="menu_salat">TT:Salat</string>
-    <string name="menu_setting">TT:Settings</string>
+    <string name="drawer_open"> فتح القائمة.</string>
+    <string name="drawer_close"> إغلاق القائمة.</string>
+    <string name="menu_home">الصفحة الرئيسية</string>
+    <string name="menu_janazat">الجنازة</string>
+    <string name="menu_sunan">سنن</string>
+    <string name="menu_salat">صلاة</string>
+    <string name="menu_setting"> إعدادات</string>
+    <string name="admin_janaza_place_other">آخر</string>
+    <string name="admin_janaza_place_other_hint">أضف مكان آخر ...</string>
+    <string name="menu_administration"> إدارة</string>
+    <string name="menu_main">الصفحة الرئيسية</string>
+    <string name="menu_notification">إشعار</string>
+    <string name="notif_dropbox_item1"> المركز الإسلامي في كيبيك (ICQ)</string>
+    <string name="notif_btnSend"> إرسال</string>
+    <string name="notif_dropbox_item2">قعبه</string>
+    <string name="notif_dropbox_item3">آخر</string>
+    <string name="notif_gender_child">طفل</string>
+    <string name="notif_gender_man">رجل</string>
+    <string name="notif_gender_women">امرأة</string>
+    <string name="notif_number">:عدد</string>
+    <string name="notif_titleDate"> تاريخ ووقت الجنازة :</string>
+    <string name="notif_titlePlaces">أماكن الجنازة :</string>
+    <string name="notif_titleRelatedPerson">معلومات عن الشخص :</string>
+    <string name="menu_admin">المشرف</string>
 </resources>
