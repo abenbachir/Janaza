@@ -28,8 +28,9 @@
     <string name="notif_btnSend">Send</string>
 
 
-
     <string name="admin_janaza_place_other">Other</string>
     <string name="admin_janaza_place_other_hint">Add an other place...</string>
+    <string name="title_janaza_list">Items</string>
+    <string name="title_janaza_detail">Janaza Detail</string>
 
 </resources>

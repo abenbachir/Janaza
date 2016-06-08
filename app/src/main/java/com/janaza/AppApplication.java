@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.janaza.OneSignal.OneSignalNotificationOpenedHandler;
 import com.janaza.OneSignal.OneSignalRestClient;
+import com.janaza.Services.JanazaManager;
+import com.janaza.Services.TerminalManager;
 import com.onesignal.OneSignal;
 
 import java.util.Locale;
@@ -19,11 +21,15 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // add new Fonts
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/UniversNextArabic-Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        // set janazat
+        JanazaManager.getInstance().setCollection(TerminalManager.getInstance().getJanazat());
 
         OneSignal.startInit(this)
                 .setNotificationOpenedHandler(new OneSignalNotificationOpenedHandler(this))

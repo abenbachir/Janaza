@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.google.gson.Gson;
+import com.janaza.Models.Janaza;
 import com.janaza.OneSignal.OneSignalRestClient;
 import com.janaza.R;
 
@@ -111,15 +113,15 @@ public class AdminFragment extends BaseFragment {
         JSONObject json = null;
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            Janaza data = new Janaza();
 
-            JSONObject data = new JSONObject();
-            data.put("id", UUID.randomUUID().toString());
+            data.setId(UUID.randomUUID().toString());
             GregorianCalendar date = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-            data.put("date", DateFormat.getDateInstance(DateFormat.MEDIUM).format(date.getTime()));
+            data.setDate(DateFormat.getDateInstance(DateFormat.MEDIUM).format(date.getTime()));
             String time = timePicker.getCurrentHour()+"h"+ timePicker.getCurrentMinute() + "min "/* +
                     ((Button)timePicker.getChildAt(2)).getText().toString()*/;
-            data.put("time", time);
-            data.put("numberPersons", numberPersonSpinner.getSelectedItem());
+            data.setTime(time);
+            data.setPersonCount((Integer)numberPersonSpinner.getSelectedItem());
             ArrayList<String> persons = new ArrayList<String>();
             if(manCheckBox.isChecked())
                 persons.add("MAN");
@@ -127,15 +129,16 @@ public class AdminFragment extends BaseFragment {
                 persons.add("WOMEN");
             if(childCheckBox.isChecked())
                 persons.add("CHILD");
-            data.put("persons", persons);
+            data.setGenders(persons);
             String placeName = janazaPlacesSpinner.getSelectedItem().toString();
             if(placeName.equals("Other"))
                 placeName = janazaPlaceOther.getText().toString();
 
-            data.put("placeName", placeName);
+            data.setPlaceName(placeName);
 
             json = new JSONObject("{'contents': {'en':'Default message'}, 'included_segments':[\"All\"]}");
-            json.put("data",data);
+            Gson gson = new Gson();
+            json.put("data", new JSONObject(gson.toJson(data)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
