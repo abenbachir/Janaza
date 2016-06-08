@@ -11,12 +11,6 @@
         android:layout_height="419dp"
         android:layout_gravity="center_vertical">
 
-        <ImageView
-            android:layout_width="219dp"
-            android:layout_height="219dp"
-            android:id="@+id/imageView"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/logo" />
     </LinearLayout>
 </LinearLayout>
 

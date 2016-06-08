@@ -24,7 +24,12 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.UUID;
 
 public class AdminFragment extends BaseFragment {
 
@@ -92,17 +97,49 @@ public class AdminFragment extends BaseFragment {
         sendNotificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    postNotification(new JSONObject("{'contents': {'en':'Test Message form admin'}, 'included_segments':[\"All\"]}"), null);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                postNotification(buildJSONObject(), null);
             }
         });
 
         reset();
 
         return view;
+    }
+
+    protected JSONObject buildJSONObject()
+    {
+        JSONObject json = null;
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+
+            JSONObject data = new JSONObject();
+            data.put("id", UUID.randomUUID().toString());
+            GregorianCalendar date = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+            data.put("date", DateFormat.getDateInstance(DateFormat.MEDIUM).format(date.getTime()));
+            String time = timePicker.getCurrentHour()+"h"+ timePicker.getCurrentMinute() + "min "/* +
+                    ((Button)timePicker.getChildAt(2)).getText().toString()*/;
+            data.put("time", time);
+            data.put("numberPersons", numberPersonSpinner.getSelectedItem());
+            ArrayList<String> persons = new ArrayList<String>();
+            if(manCheckBox.isChecked())
+                persons.add("MAN");
+            if(womenCheckBox.isChecked())
+                persons.add("WOMEN");
+            if(childCheckBox.isChecked())
+                persons.add("CHILD");
+            data.put("persons", persons);
+            String placeName = janazaPlacesSpinner.getSelectedItem().toString();
+            if(placeName.equals("Other"))
+                placeName = janazaPlaceOther.getText().toString();
+
+            data.put("placeName", placeName);
+
+            json = new JSONObject("{'contents': {'en':'Default message'}, 'included_segments':[\"All\"]}");
+            json.put("data",data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 
     @Override
