@@ -3,8 +3,11 @@ package com.janaza;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +34,8 @@ import com.google.android.gms.plus.Plus;
 import com.janaza.Factories.FragmentFactory;
 import com.janaza.Fragments.OnFragmentInteractionListener;
 import com.janaza.Services.AccountManager;
+
+import java.util.Locale;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements
     private boolean signInClicked = false;
     private boolean mIntentInProgress;
     private ConnectionResult mConnectionResult;
+    public static final String PREFS_NAME = "myAppSharedPref";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -60,15 +67,32 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+
+        // Apply the selected language that we stocked in the preferences
+        try {
+            SharedPreferences Prefsettings = getSharedPreferences(PREFS_NAME, 0);
+            Locale myLocale = new Locale(Prefsettings.getString("Lang", "en"));
+            Resources res = getResources();
+            res.getConfiguration().locale = myLocale;
+            res.updateConfiguration(res.getConfiguration(), res.getDisplayMetrics());
+
+        } catch (Exception e) {
+        }
+
+        return null;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Home");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
 
         //Setup DrawerLayout et NavigationView
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -93,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements
 //        }
         //montre le premier fragment
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container,activeFragment)
+                .replace(R.id.fragment_container, activeFragment)
                 .commit();
 
         View headerLayout = mNavigationView.getHeaderView(0);
@@ -115,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements
 
         updateAccountBox();
         updateNavigationMenuItems();
+
+
     }
 
 
@@ -201,29 +227,31 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
-    protected void updateAccountBox() {
-         View headerLayout = mNavigationView.getHeaderView(0);
 
-         LinearLayout signinLayout = (LinearLayout) headerLayout.findViewById(R.id.nav_header_signin_options_layout);
-         LinearLayout displayLayout = (LinearLayout) headerLayout.findViewById(R.id.nav_header_display_layout);
-         signinLayout.setVisibility(View.GONE);
-         displayLayout.setVisibility(View.GONE);
-         if(accountManager.getAccount() != null) {
-             String url = accountManager.getAccount().getPictureUrl();
-             TextView profileName = (TextView) headerLayout.findViewById(R.id.nav_profileName);
-             TextView profileEmail = (TextView) headerLayout.findViewById(R.id.nav_profileEmail);
-             profileName.setText(accountManager.getAccount().getDisplayName());
-             profileEmail.setText(accountManager.getAccount().getEmail());
-             displayLayout.setVisibility(View.VISIBLE);
-         }else{
-             btnSignIn.setEnabled(true);
-             signinLayout.setVisibility(View.VISIBLE);
-         }
-     }
+    protected void updateAccountBox() {
+        View headerLayout = mNavigationView.getHeaderView(0);
+
+        LinearLayout signinLayout = (LinearLayout) headerLayout.findViewById(R.id.nav_header_signin_options_layout);
+        LinearLayout displayLayout = (LinearLayout) headerLayout.findViewById(R.id.nav_header_display_layout);
+        signinLayout.setVisibility(View.GONE);
+        displayLayout.setVisibility(View.GONE);
+        if (accountManager.getAccount() != null) {
+            String url = accountManager.getAccount().getPictureUrl();
+            TextView profileName = (TextView) headerLayout.findViewById(R.id.nav_profileName);
+            TextView profileEmail = (TextView) headerLayout.findViewById(R.id.nav_profileEmail);
+            profileName.setText(accountManager.getAccount().getDisplayName());
+            profileEmail.setText(accountManager.getAccount().getEmail());
+            displayLayout.setVisibility(View.VISIBLE);
+        } else {
+            btnSignIn.setEnabled(true);
+            signinLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
     protected void updateNavigationMenuItems() {
 
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -234,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToogle.onOptionsItemSelected(item)) {
@@ -242,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+
     // `onPostCreate` called when activity start-up is complete after `onStart()`
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -262,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements
         //ORGANISATION DU CHANGEMENT DE VUES/FRAGMENTS DANS LA BARRE DE NAVIGATION
 
         int id = item.getItemId();
-        Toast.makeText(getBaseContext(),""+id,Toast.LENGTH_SHORT);
+        Toast.makeText(getBaseContext(), "" + id, Toast.LENGTH_SHORT);
         if (id == R.id.nav_signOut) {
             accountManager.disconnect();
             updateAccountBox();
@@ -277,7 +305,6 @@ public class MainActivity extends AppCompatActivity implements
 
         return true;
     }
-
 
     protected void switchFragment(Fragment toFragment) {
         if (activeFragment != toFragment) {
@@ -301,9 +328,8 @@ public class MainActivity extends AppCompatActivity implements
         switchFragment(FragmentFactory.getInstance().getMainFragment());
     }
 
-
     private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open,  R.string.drawer_close);
+        return new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
 

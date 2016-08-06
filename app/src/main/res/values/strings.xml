@@ -27,7 +27,16 @@
     <string name="notif_titleDate">Date and time of the funeral:</string>
     <string name="notif_btnSend">Send</string>
 
+    <!-- Strings for Settings -->
+    <string name="Set_LangTitle">Language</string>
+    <string name="Set_OthersTitles">Others</string>
+    <string name="Set_DialogTitle">Select the language :</string>
+    <string name="Set_TxtEnglish">English</string>
+    <string name="Set_TxtFrench">French</string>
+    <string name="Set_TxtArabic">Arabic</string>
 
+
+    <!-- Strings for Others-->
     <string name="admin_janaza_place_other">Other</string>
     <string name="admin_janaza_place_other_hint">Add an other place...</string>
     <string name="title_janaza_list">Items</string>

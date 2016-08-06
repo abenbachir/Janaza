@@ -25,4 +25,12 @@
     <string name="notif_titlePlaces"> Lieux de l\'enterrement :</string>
     <string name="notif_titleRelatedPerson">Informations sur la personne :</string>
     <string name="menu_admin">Admin</string>
+    <string name="Set_DialogTitle">Sélectionnez la langue :</string>
+    <string name="Set_LangTitle">Langue</string>
+    <string name="Set_OthersTitles">Autres</string>
+    <string name="Set_TxtArabic">Arabe</string>
+    <string name="Set_TxtEnglish">Anglais</string>
+    <string name="Set_TxtFrench">Français</string>
+    <string name="title_janaza_detail">Détails des funérailles</string>
+    <string name="title_janaza_list">Articles</string>
 </resources>

@@ -25,4 +25,12 @@
     <string name="notif_titlePlaces">أماكن الجنازة :</string>
     <string name="notif_titleRelatedPerson">معلومات عن الشخص :</string>
     <string name="menu_admin">المشرف</string>
+    <string name="Set_DialogTitle">اختيار اللغة:</string>
+    <string name="Set_LangTitle">اختيار اللغة</string>
+    <string name="Set_OthersTitles"> آخر</string>
+    <string name="Set_TxtEnglish"> الإنجليزية</string>
+    <string name="Set_TxtArabic">العربية</string>
+    <string name="Set_TxtFrench">الفرنسية</string>
+    <string name="title_janaza_detail">تفاصيل الجنازة</string>
+    <string name="title_janaza_list"> العناصر</string>
 </resources>
